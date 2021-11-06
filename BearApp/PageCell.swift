@@ -9,14 +9,29 @@ import UIKit
 
 class PageCell: UICollectionViewCell {
     
-    let bearImageView: UIImageView = {
+    var page: Page? {
+        didSet {
+            guard let unwrappedPage = page else { return }
+            bearImageView.image = UIImage(named: unwrappedPage.imageName)
+            
+            let attributedText = NSMutableAttributedString(string: unwrappedPage.headerText, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18)])
+            
+            attributedText.append(NSMutableAttributedString(string: "\n\n\n\(unwrappedPage.bodyText)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.gray]))
+            
+            descriptionTexView.attributedText = attributedText
+            descriptionTexView.textAlignment = .center
+             
+        }
+    }
+    
+    private let bearImageView: UIImageView = {
         let imageView = UIImageView(image: #imageLiteral(resourceName: "bear_first"))
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    let descriptionTexView: UITextView = {
+    private let descriptionTexView: UITextView = {
         let textView = UITextView()
         let attributedText = NSMutableAttributedString(string: "Join us today in our fun and games!", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18)])
         
